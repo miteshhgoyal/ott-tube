@@ -111,10 +111,7 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password, role } = req.body;
 
-        console.log('Login request body:', { email, role }); // log
-
         if (!email || !password || !role) {
-            console.log('Missing fields in login');
             return res.status(400).json({
                 success: false,
                 message: 'Email, password and role are required'
@@ -127,8 +124,6 @@ router.post('/login', async (req, res) => {
             status: 'Active'
         }).select('+password');
 
-        console.log('User found for login:', !!user, user?.email, user?.role); // log
-
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -137,7 +132,6 @@ router.post('/login', async (req, res) => {
         }
 
         const isPasswordValid = await user.comparePassword(password);
-        console.log('Password valid?', isPasswordValid); // log
 
         if (!isPasswordValid) {
             return res.status(401).json({

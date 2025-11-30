@@ -200,8 +200,6 @@ router.post('/login', async (req, res) => {
             subscriber = activeSubscriber;
             usingCustomMac = true;
 
-            console.log(`✅ Login with custom MAC: ${customMacAddress} from device: ${deviceMac}`);
-
             // ==========================================
             // CASE 2: No Custom MAC - Use Own Device MAC
             // ==========================================
@@ -273,8 +271,6 @@ router.post('/login', async (req, res) => {
                 deviceModel: deviceName || subscriber.deviceInfo?.deviceModel,
             };
             await subscriber.save();
-
-            console.log(`✅ Login with own device MAC: ${deviceMac}`);
         }
 
         // ==========================================
