@@ -5,19 +5,19 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Import routes
-import authRoutes from './routes/auth.routes.js';
-import dashboardRoutes from './routes/dashboard.routes.js';
-import categoryRoutes from './routes/categories.routes.js';
-import channelRoutes from './routes/channels.routes.js';
-import subscriberRoutes from './routes/subscribers.routes.js';
-import packageRoutes from './routes/packages.routes.js';
-import resellerRoutes from './routes/resellers.routes.js';
-import distributorRoutes from './routes/distributors.routes.js';
-import ottRoutes from './routes/ott.routes.js';
-import creditRoutes from './routes/credit.routes.js';
-import profileRoutes from './routes/profile.routes.js';
-import customerRoutes from './routes/customer.routes.js';
-import proxyRoutes from './routes/proxy.routes.js';
+import authRoutes from './routes/authRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import channelRoutes from './routes/channelRoutes.js';
+import subscriberRoutes from './routes/subscriberRoutes.js';
+import packageRoutes from './routes/packageRoutes.js';
+import resellerRoutes from './routes/resellerRoutes.js';
+import distributorRoutes from './routes/distributorRoutes.js';
+import ottRoutes from './routes/ottRoutes.js';
+import creditRoutes from './routes/creditRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
+import proxyRoutes from './routes/proxyRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
