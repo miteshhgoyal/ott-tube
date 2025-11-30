@@ -2,8 +2,7 @@
 import axios from 'axios';
 import { tokenService } from './tokenService.js';
 
-// const API_BASE_URL = 'http://192.168.1.66:8000/api';
-const API_BASE_URL = 'https://otttube.onrender.com/api';
+const API_BASE_URL = 'http://93.127.199.182/otttube/api';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
