@@ -20,7 +20,7 @@ const generateToken = (user) => {
     );
 };
 
-app.get('/health', (req, res) => {
+router.get('/health', (req, res) => {
     res.json({
         success: true,
         message: 'Auth API is running',
