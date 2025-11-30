@@ -54,6 +54,7 @@ app.use('/api/proxy', proxyRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
+    console.log("Health check request came!");
     res.json({
         success: true,
         message: 'Server is running',
