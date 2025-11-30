@@ -85,10 +85,4 @@ const subscriberSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Create geospatial index
-subscriberSchema.index({ 'lastLocation.coordinates': '2dsphere' });
-
-// Create unique index for macAddress
-subscriberSchema.index({ resellerId: 1, serialNumber: 1 }, { unique: true });
-
 export default mongoose.model('Subscriber', subscriberSchema);

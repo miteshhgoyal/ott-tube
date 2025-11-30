@@ -80,12 +80,6 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Indexes for better performance
-userSchema.index({ email: 1 });
-userSchema.index({ role: 1 });
-userSchema.index({ status: 1 });
-userSchema.index({ serialNumber: 1 }, { sparse: true }); // NEW: Index for serial number
-
 // Hide sensitive fields from JSON
 userSchema.set('toJSON', {
     transform: function (doc, ret) {
