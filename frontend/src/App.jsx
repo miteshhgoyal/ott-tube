@@ -83,7 +83,7 @@ const PublicRoute = ({ children }) => {
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/otttube">
         <div className="App">
           <Routes>
             {/* Public Routes */}
