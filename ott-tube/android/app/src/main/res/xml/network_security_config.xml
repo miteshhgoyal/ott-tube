@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+
+    <!-- Default: disallow cleartext unless explicitly enabled -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Explicit streaming / API domains -->
     <domain-config cleartextTrafficPermitted="true">
-        <!-- Explicit problematic domains -->
+        <!-- Problematic domains -->
         <domain includeSubdomains="true">starshare.st</domain>
         <domain includeSubdomains="true">afpanel.one</domain>
-        
+
         <!-- IP-based streams -->
         <domain includeSubdomains="true">103.175.73.12</domain>
         <domain includeSubdomains="true">210.89.51.165</domain>
