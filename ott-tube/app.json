@@ -37,7 +37,6 @@
             },
             "package": "com.tv.otttube",
             "versionCode": 1,
-            "networkSecurityConfig": "./android/app/src/main/res/xml/network_security_config.xml",
             "permissions": [
                 "android.permission.INTERNET",
                 "android.permission.ACCESS_NETWORK_STATE",
@@ -115,13 +114,6 @@
                     "android": {
                         "usesCleartextTraffic": true
                     }
-                }
-            ],
-            [
-                "expo-network-security-config",
-                {
-                    "networkSecurityConfig": "./android/app/src/main/res/xml/network_security_config.xml",
-                    "enable": true
                 }
             ]
         ],
