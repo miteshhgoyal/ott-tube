@@ -30,7 +30,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             tokenService.removeToken();
-            // window.location.href = '/otttube/login';
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

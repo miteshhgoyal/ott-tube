@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }
 
   if (!user) {
-    // return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
@@ -83,7 +83,7 @@ const PublicRoute = ({ children }) => {
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename="/otttube">
+      <Router>
         <div className="App">
           <Routes>
             {/* Public Routes */}
@@ -295,7 +295,7 @@ const App = () => {
             />
 
             {/* Default Routes */}
-            {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route
               path="/unauthorized"
               element={
