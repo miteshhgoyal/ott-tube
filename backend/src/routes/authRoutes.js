@@ -20,14 +20,6 @@ const generateToken = (user) => {
     );
 };
 
-router.get('/health', (req, res) => {
-    res.json({
-        success: true,
-        message: 'Auth API is running',
-        timestamp: new Date().toISOString()
-    });
-});
-
 // Register
 router.post('/register', async (req, res) => {
     try {
@@ -107,6 +99,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// Login - FIXED
 router.post('/login', async (req, res) => {
     try {
         const { email, password, role } = req.body;
@@ -118,31 +111,34 @@ router.post('/login', async (req, res) => {
             });
         }
 
+        // Find user by email and role - FIXED: Use 'Active' not 'active'
         const user = await User.findOne({
             email: email.toLowerCase(),
             role: role.toLowerCase(),
-            status: 'Active'
+            status: 'Active' // FIXED: Capital A
         }).select('+password');
 
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: 'User with given email not found'
+                message: 'Invalid credentials'
             });
         }
 
+        // Check password
         const isPasswordValid = await user.comparePassword(password);
-
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
-                message: 'Wrong password'
+                message: 'Invalid credentials'
             });
         }
 
+        // Update last login
         user.lastLogin = new Date();
         await user.save();
 
+        // Generate token
         const token = generateToken(user);
 
         res.json({

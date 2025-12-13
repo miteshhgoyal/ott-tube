@@ -12,10 +12,13 @@ import {
   Eye,
   EyeOff,
   AlertCircle,
+  Package as PackageIcon,
+  Check,
 } from "lucide-react";
 
 const Distributors = () => {
   const [distributors, setDistributors] = useState([]);
+  const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -32,6 +35,7 @@ const Distributors = () => {
     phone: "",
     status: "Active",
     balance: "",
+    packages: [],
   });
   const [balanceError, setBalanceError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -40,6 +44,7 @@ const Distributors = () => {
 
   useEffect(() => {
     fetchDistributors();
+    fetchPackages();
   }, [statusFilter]);
 
   const fetchDistributors = async () => {
@@ -57,6 +62,15 @@ const Distributors = () => {
     }
   };
 
+  const fetchPackages = async () => {
+    try {
+      const response = await api.get("/distributors/packages");
+      setPackages(response.data.data.packages);
+    } catch (error) {
+      console.error("Failed to fetch packages:", error);
+    }
+  };
+
   const handleOpenModal = (mode, distributor = null) => {
     setModalMode(mode);
     setBalanceError("");
@@ -69,6 +83,7 @@ const Distributors = () => {
         phone: distributor.phone,
         status: distributor.status,
         balance: distributor.balance || "",
+        packages: distributor.packages?.map((p) => p._id) || [],
       });
     } else {
       setFormData({
@@ -78,6 +93,7 @@ const Distributors = () => {
         phone: "",
         status: "Active",
         balance: "",
+        packages: [],
       });
     }
     setShowModal(true);
@@ -95,6 +111,7 @@ const Distributors = () => {
       phone: "",
       status: "Active",
       balance: "",
+      packages: [],
     });
   };
 
@@ -197,7 +214,7 @@ const Distributors = () => {
                   Distributors
                 </h1>
                 <p className="text-sm text-gray-600">
-                  Manage distributor accounts and permissions
+                  Manage distributor accounts and packages
                 </p>
               </div>
             </div>
@@ -302,6 +319,9 @@ const Distributors = () => {
                       Balance
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Packages
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       Status
                     </th>
                     <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -312,7 +332,7 @@ const Distributors = () => {
                 <tbody className="divide-y divide-gray-200">
                   {filteredDistributors.length === 0 ? (
                     <tr>
-                      <td colSpan="9" className="px-6 py-12 text-center">
+                      <td colSpan="10" className="px-6 py-12 text-center">
                         <p className="text-gray-500">No distributors found</p>
                       </td>
                     </tr>
@@ -345,9 +365,19 @@ const Distributors = () => {
                           {distributor.phone}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                          ₹
-                          {distributor.balance?.toLocaleString("en-IN") ||
-                            "0"}
+                          ₹{distributor.balance?.toLocaleString("en-IN") || "0"}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {distributor.packages?.length > 0 ? (
+                            <div className="flex items-center space-x-1">
+                              <PackageIcon className="w-4 h-4 text-blue-600" />
+                              <span className="font-medium">
+                                {distributor.packages.length}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">None</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 text-sm">
                           <span
@@ -488,9 +518,13 @@ const Distributors = () => {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ""); // keep digits only
+                      if (value.length <= 10) {
+                        setFormData({ ...formData, phone: value });
+                      }
+                    }}
+                    maxLength={10}
                     placeholder="Enter phone"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
@@ -542,6 +576,63 @@ const Distributors = () => {
                       </span>
                     </div>
                   )}
+                </div>
+
+                {/* Packages */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Packages (Optional)
+                  </label>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 max-h-60 overflow-y-auto">
+                    {packages.length === 0 ? (
+                      <p className="text-gray-500 text-sm">
+                        No packages available
+                      </p>
+                    ) : (
+                      <div className="space-y-2">
+                        {packages.map((pkg) => (
+                          <label
+                            key={pkg._id}
+                            className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer transition-colors"
+                          >
+                            <div className="relative">
+                              <input
+                                type="checkbox"
+                                checked={formData.packages.includes(pkg._id)}
+                                onChange={() => {
+                                  const newPackages =
+                                    formData.packages.includes(pkg._id)
+                                      ? formData.packages.filter(
+                                          (id) => id !== pkg._id
+                                        )
+                                      : [...formData.packages, pkg._id];
+                                  setFormData({
+                                    ...formData,
+                                    packages: newPackages,
+                                  });
+                                }}
+                                className="sr-only"
+                              />
+                              <div
+                                className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                                  formData.packages.includes(pkg._id)
+                                    ? "bg-blue-600 border-blue-600"
+                                    : "border-gray-300 hover:border-blue-400"
+                                }`}
+                              >
+                                {formData.packages.includes(pkg._id) && (
+                                  <Check className="w-4 h-4 text-white" />
+                                )}
+                              </div>
+                            </div>
+                            <span className="text-sm text-gray-900 font-medium">
+                              {pkg.name} - ₹{pkg.cost} ({pkg.duration} days)
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
