@@ -269,7 +269,7 @@ router.get('/backup', authenticateToken, async (req, res) => {
         const now = new Date();
         const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
         const timeStr = now.toTimeString().slice(0, 8).replace(/:/g, '');
-        const filename = `iptv_backup_${dateStr}_${timeStr}.json`;
+        const filename = `ott_tube_backup_${dateStr}_${timeStr}.json`;
 
         // Set headers for JSON download
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);

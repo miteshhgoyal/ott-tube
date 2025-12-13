@@ -63,7 +63,7 @@ const Dashboard = () => {
       // Filename is set in backend Content-Disposition header
       // But fallback to generic name if not available
       const contentDisposition = response.headers["content-disposition"];
-      let filename = "iptv_backup.json";
+      let filename = "ott_tube_backup.json";
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(/filename="(.+)"/);
         if (filenameMatch?.[1]) {
@@ -79,10 +79,10 @@ const Dashboard = () => {
       window.URL.revokeObjectURL(url);
 
       // Show success feedback
-      alert(`✅ Backup exported successfully!\n📁 File: ${filename}`);
+      alert(`Backup exported successfully!\nFile: ${filename}`);
     } catch (error) {
       console.error("Backup export failed:", error);
-      alert("❌ Failed to export backup. Admin access required.");
+      alert("Failed to export backup. Admin access required.");
     } finally {
       setBackupLoading(false);
     }
